@@ -3,15 +3,18 @@ package pizza.ecs.android;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class PizzaAdapter extends RecyclerView.Adapter<PizzaAdapter.ViewHolder> {
     
@@ -27,8 +30,34 @@ public class PizzaAdapter extends RecyclerView.Adapter<PizzaAdapter.ViewHolder> 
     }
     
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pizza_item, null);
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pizza_item, null);
+    
+        view.findViewById(R.id.action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(parent.getContext(), view.findViewById(R.id.action));
+                menu.inflate(R.menu.menu_pizza_item);
+                menu.show();
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch(item.getTitle().toString()) {
+                            case "Details":
+                                // TODO: details activity?
+                                return false;
+                        
+                            case "Remove":
+                                // TODO: remove pizza
+                                return false;
+                        
+                            default:
+                                return false;
+                        }
+                    }
+                });
+            }
+        });
         
         return new ViewHolder(view, parent.getContext());
     }

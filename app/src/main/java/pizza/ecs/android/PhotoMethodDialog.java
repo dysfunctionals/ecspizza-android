@@ -16,7 +16,7 @@ public class PhotoMethodDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Add new pizza:")
+        builder.setTitle("Add another pizza:")
                .setItems(new CharSequence[]{"Take photo", "Select from camera roll"}, new DialogInterface.OnClickListener() {
                    @Override
                    public void onClick(DialogInterface dialog, int which) {

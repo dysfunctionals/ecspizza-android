@@ -3,15 +3,22 @@ package pizza.ecs.android;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class APIHelper {
@@ -24,6 +31,8 @@ public class APIHelper {
     private static APIHelper helper;
     private RequestQueue queue;
     
+    
+    // TODO: change to production
     public static final String URL = "http://10.9.128.21:5000/api/v1/";
     
     private APIHelper(Context context) {
@@ -54,7 +63,6 @@ public class APIHelper {
             
             @Override
             public void onResponse(String response) {
-                System.out.println(response);
                 try {
                     JSONObject obj = new JSONObject(response);
                     if(obj.get("status").toString().equals("200")) {
@@ -94,5 +102,38 @@ public class APIHelper {
         };
         
         APIHelper.getInstance(context).addToRequestQueue(request);
+    }
+    
+    public static void updatePizzaList(Context context, final PizzaAdapter adapter, final SwipeRefreshLayout swipe) {
+        APIHelper.getInstance(context).addToRequestQueue(new AuthorisedStringRequest(URL + "userpizzas/" + uuid, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                
+                JSONArray array;
+                try {
+                    array = new JSONArray(response);
+                    adapter.removeAllPizzas();
+                    for(int i = 0; i < array.length(); i++) {
+                        JSONObject obj = array.getJSONObject(i);
+                        Date date;
+                        try {
+                            date = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z", Locale.UK).parse(obj.getString("datetime"));
+                        } catch(ParseException e) {
+                            e.printStackTrace();
+                            date = new Date();
+                        }
+                        PizzaType type = PizzaType.valueOf(obj.getString("pizza_type"));
+                        adapter.addPizza(new Pizza(type, Uri.parse(type.getTempURI()), date));
+                    }
+                } catch(JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    adapter.notifyDataSetChanged();
+                    if(swipe != null) {
+                        swipe.setRefreshing(false);
+                    }
+                }
+            }
+        }, null));
     }
 }

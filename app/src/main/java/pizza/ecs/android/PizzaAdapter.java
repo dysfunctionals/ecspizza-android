@@ -29,6 +29,15 @@ public class PizzaAdapter extends RecyclerView.Adapter<PizzaAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
     
+    public void removeAllPizzas() {
+        pizzas.clear();
+    }
+    
+    public void setPizzas(List<Pizza> pizzas) {
+        this.pizzas = pizzas;
+        notifyDataSetChanged();
+    }
+    
     public void sort(int direction) {
         sortDirection = direction;
         Collections.sort(pizzas, new Comparator<Pizza>() {
@@ -44,7 +53,6 @@ public class PizzaAdapter extends RecyclerView.Adapter<PizzaAdapter.ViewHolder> 
             }
         });
         notifyDataSetChanged();
-        System.out.println("Sort" + sortDirection);
     }
     
     @Override

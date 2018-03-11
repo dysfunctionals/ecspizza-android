@@ -3,7 +3,6 @@ package pizza.ecs.android;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,13 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     
@@ -62,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(MainActivity.this, "Refreshing", Toast.LENGTH_SHORT).show();
+                APIHelper.updatePizzaList(MainActivity.this, pizzaAdapter, swipe);
                 swipe.setRefreshing(false);
             }
         });
@@ -76,39 +72,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new CustomSpacing());
         recyclerView.setAdapter(pizzaAdapter);
     
-        //<editor-fold desc="Placeholder data">
-        // TODO: remove this placeholder data
-        String pepperoni = "https://www.dominos.co.uk/Content/images/Products/GB/Pizza/256x256/pepperonipassion-20170704.jpg";
-        String meaty = "https://www.dominos.co.uk/Content/images/Products/GB/Pizza/256x256/mighty-meaty-20170704.jpg";
-        String haw = "https://www.dominos.co.uk/Content/images/Products/GB/Pizza/256x256/hawaiian-20170704.jpg";
-        String spicy = "https://www.dominos.co.uk/Content/images/Products/GB/Pizza/256x256/hotspicey-20170704.jpg";
-        
-        Uri pepperoniURI = Uri.parse(pepperoni);
-        Uri meatyURI = Uri.parse(meaty);
-        Uri hawURI = Uri.parse(haw);
-        Uri spicyURI = Uri.parse(spicy);
-    
-        Date[] dates = new Date[8];
-        for(int i = 0; i < 8; i++) {
-            dates[i] = new Date();
-            dates[i].setTime(new Date().getTime() - (long) (Math.random() * 1000000000) - (long) (Math.random() * 1000000));
-        }
-        
-        pizzaAdapter.addPizza(new Pizza(PizzaType.PEPPERONI, pepperoniURI, dates[1]));
-        pizzaAdapter.addPizza(new Pizza(PizzaType.MIGHTY_MEATY, meatyURI, dates[2]));
-        pizzaAdapter.addPizza(new Pizza(PizzaType.HAWAIIAN, hawURI, dates[3]));
-        pizzaAdapter.addPizza(new Pizza(PizzaType.HOT_SPICY, spicyURI, dates[4]));
-        pizzaAdapter.addPizza(new Pizza(PizzaType.PEPPERONI, pepperoniURI, dates[5]));
-        pizzaAdapter.addPizza(new Pizza(PizzaType.MIGHTY_MEATY, meatyURI, dates[6]));
-        pizzaAdapter.addPizza(new Pizza(PizzaType.HAWAIIAN, hawURI, dates[7]));
-        pizzaAdapter.addPizza(new Pizza(PizzaType.HOT_SPICY, spicyURI, dates[0]));
-        //</editor-fold>
+        APIHelper.updatePizzaList(this, pizzaAdapter, null);
     }
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK) {
-            System.out.println(data.getData().toString());
+            String localFileURI = data.getData().toString();
             // TODO: upload picture
         }
         super.onActivityResult(requestCode, resultCode, data);

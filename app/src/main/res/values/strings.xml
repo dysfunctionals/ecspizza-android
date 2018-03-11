@@ -11,4 +11,7 @@
 
     <string name="details">Details</string>
     <string name="remove">Remove</string>
+
+    <string name="sort_newest_first">Newest first</string>
+    <string name="sort_oldest_first">Oldest first</string>
 </resources>

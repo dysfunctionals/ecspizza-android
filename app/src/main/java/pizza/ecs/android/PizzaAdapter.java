@@ -12,13 +12,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class PizzaAdapter extends RecyclerView.Adapter<PizzaAdapter.ViewHolder> {
     
     private List<Pizza> pizzas;
+    private int sortDirection = 0;
     
     public PizzaAdapter() {
         pizzas = new ArrayList<>();
@@ -26,7 +25,26 @@ public class PizzaAdapter extends RecyclerView.Adapter<PizzaAdapter.ViewHolder> 
     
     public void addPizza(Pizza pizza) {
         pizzas.add(pizza);
+        sort(sortDirection);
         notifyDataSetChanged();
+    }
+    
+    public void sort(int direction) {
+        sortDirection = direction;
+        Collections.sort(pizzas, new Comparator<Pizza>() {
+            @Override
+            public int compare(Pizza o1, Pizza o2) {
+                switch(sortDirection) {
+                    case 0:
+                        return o2.getDate().compareTo(o1.getDate());
+                    
+                    default:
+                        return o1.getDate().compareTo(o2.getDate());
+                }
+            }
+        });
+        notifyDataSetChanged();
+        System.out.println("Sort" + sortDirection);
     }
     
     @Override

@@ -8,6 +8,20 @@
     android:background="@color/loginPrimary">
 
     <android.support.constraint.Guideline
+        android:id="@+id/topGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/bottomGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <android.support.constraint.Guideline
         android:id="@+id/farLeftGuideline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -19,21 +33,21 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.45"/>
+        app:layout_constraintGuide_percent="0.45" />
 
     <android.support.constraint.Guideline
         android:id="@+id/middleRightGuideline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.55"/>
+        app:layout_constraintGuide_percent="0.52" />
 
     <android.support.constraint.Guideline
         android:id="@+id/farRightGuideline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95"/>
+        app:layout_constraintGuide_percent="0.92" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="wrap_content"
@@ -67,10 +81,13 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
 
         app:layout_constraintLeft_toLeftOf="@id/middleRightGuideline"
-        app:layout_constraintRight_toRightOf="@id/farRightGuideline">
+        app:layout_constraintRight_toRightOf="@id/farRightGuideline"
+        app:layout_constraintTop_toTopOf="@id/topGuideline"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
+        app:layout_constraintVertical_bias="0.4">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/email_container"
@@ -80,10 +97,11 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <android.support.design.widget.TextInputEditText
+                android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="Email address"
+                android:hint="@string/email_address"
                 android:lines="1"
                 android:textColor="@android:color/white"
                 android:backgroundTint="@android:color/white" />
@@ -94,17 +112,16 @@
             android:id="@+id/password_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            app:layout_constraintTop_toBottomOf="@id/email_container"
-
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="36dp">
+
+            app:layout_constraintTop_toBottomOf="@id/email_container">
 
             <android.support.design.widget.TextInputEditText
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:lines="1"
                 android:textColor="@android:color/white"
                 android:backgroundTint="@android:color/white" />
@@ -119,8 +136,10 @@
             android:background="@color/loginAccent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="LOG IN"
-            android:textSize="20sp" />
+            android:layout_marginTop="36dp"
+            android:text="@string/log_in_caps"
+            android:textSize="20sp"
+            android:onClick="login" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

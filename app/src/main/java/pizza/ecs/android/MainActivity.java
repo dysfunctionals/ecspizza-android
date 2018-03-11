@@ -1,6 +1,7 @@
 package pizza.ecs.android;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,8 +18,6 @@ import android.view.View;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    
-    private PizzaAdapter pizzaAdapter;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +42,17 @@ public class MainActivity extends AppCompatActivity {
         // TODO: profile pictures?
         setTitle("   Joshua's pizzas");
         getSupportActionBar().setIcon(R.drawable.ic_action_name);
-        
-        pizzaAdapter = new PizzaAdapter();
+    
+        PizzaAdapter pizzaAdapter = new PizzaAdapter();
         
         RecyclerView recyclerView = findViewById(R.id.listView);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, CustomSpacing.COLUMNS);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT? 2 : 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new CustomSpacing());
         recyclerView.setAdapter(pizzaAdapter);
-        
+    
+        // TODO: remove this placeholder data
         String pepperoni = "https://www.dominos.co.uk/Content/images/Products/GB/Pizza/256x256/pepperonipassion-20170704.jpg";
         String meaty = "https://www.dominos.co.uk/Content/images/Products/GB/Pizza/256x256/mighty-meaty-20170704.jpg";
         String haw = "https://www.dominos.co.uk/Content/images/Products/GB/Pizza/256x256/hawaiian-20170704.jpg";
@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -98,17 +97,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here.
-    
         int id = item.getItemId();
     
         switch(id) {
             case R.id.action_sort:
+                // TODO: sort?
                 return true;
                 
             case R.id.action_filter:
+                // TODO: filter?
                 return true;
         
             case R.id.action_logout:
+                finish();
                 return true;
         }
     
@@ -118,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
     private class CustomSpacing extends RecyclerView.ItemDecoration {
         
         private static final int OFFSETS = 20;
-        private static final int COLUMNS = 2;
     
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
